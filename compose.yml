@@ -1,19 +1,26 @@
 version: '3'
 
+networks:
+  internal:
+  web:
+
 services:
   bespokefit:
     command: openff-bespoke executor launch --launch-redis --n-optimizer-workers 0 --n-qc-compute-workers 0 --n-fragmenter-workers 0 --directory bespoke-executor
     build: .
     container_name: "bepokefit-server"
+    hostname: "bespokefit"
     ports:
-      - 80:8000
+      - ${BFLOW_PORT:?err}:${BFLOW_PORT:?err}
     volumes:
       - type: bind
         source: $HOME/.OpenEye/
         target: /home/mambauser/.OpenEye/
     env_file:
       - .env
-
+    restart: always
+    networks:
+      - internal
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bespokefit.rule=Host(`${HOST_DOMAIN:?err}`)"
