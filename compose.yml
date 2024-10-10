@@ -11,7 +11,7 @@ services:
     container_name: "bepokefit-server"
     hostname: "bespokefit"
     ports:
-      - ${BFLOW_PORT:?err}:${BFLOW_PORT:?err}
+      - ${BEFLOW_GATEWAY_PORT:?err}:${BEFLOW_GATEWAY_PORT:?err}
     volumes:
       - type: bind
         source: $HOME/.OpenEye/
@@ -30,7 +30,7 @@ services:
       - "traefik.http.routers.bespokefit_route.entrypoints=websecure"
       - "traefik.http.routers.bespokefit_route.rule=Host(`${HOST_DOMAIN:?err}`)"
       - "traefik.http.routers.bespokefit_route.tls.certresolver=myresolver"
-      - "traefik.http.services.bespokefit_route.loadbalancer.server.url=http://XXXX:${BFLOW_PORT:?err}"
+      - "traefik.http.services.bespokefit_route.loadbalancer.server.url=http://${BEFLOW_GATEWAY_ADDRESS:?err}:${BEFLOW_GATEWAY_PORT:?err}"
 
 
   reverse-proxy:
@@ -42,7 +42,7 @@ services:
     depends_on:
       - bespokefit
     restart: unless-stopped
-    command: 
+    command:
       - "--log.level=DEBUG"
       - "--providers.docker"
       # Do not expose containers unless explicitly told so
@@ -64,4 +64,3 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - ./letsencrypt:/letsencrypt
-  
