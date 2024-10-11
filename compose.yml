@@ -6,7 +6,7 @@ networks:
 
 services:
   bespokefit:
-    command: openff-bespoke executor launch --launch-redis --n-optimizer-workers {BEFLOW_N_OPT_WORKERS:?err} --n-qc-compute-workers {BEFLOW_N_OPT_WORKERS:?err}  --n-fragmenter-workers {BEFLOW_N_FRAG_WORKERS:?err} --directory bespoke-executor
+    command: openff-bespoke executor launch --launch-redis --n-optimizer-workers ${BEFLOW_N_OPT_WORKERS:?err} --n-qc-compute-workers ${BEFLOW_N_OPT_WORKERS:?err}  --n-fragmenter-workers ${BEFLOW_N_FRAG_WORKERS:?err} --directory bespoke-executor
     build: .
     container_name: "bepokefit-server"
     hostname: "bespokefit"
