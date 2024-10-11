@@ -11,8 +11,7 @@ ENV PYTHONUNBUFFERED=1
 COPY --chown=$MAMBA_USER:$MAMBA_USER devtools/conda-envs/test-env.yaml /tmp/env.yaml
 COPY --chown=$MAMBA_USER:$MAMBA_USER openff /tmp/openff
 COPY --chown=$MAMBA_USER:$MAMBA_USER LICENSE README.md setup.cfg setup.py /tmp/
-RUN micromamba install -y -n base git -f /tmp/env.yaml && \
-    micromamba clean --all --yes
+RUN ulimit -n 65535 && micromamba install -y -n base git -f /tmp/env.yaml &&   micromamba clean --all --yes 
 
 # Ensure that conda environment is automatically activated
 # https://github.com/mamba-org/micromamba-docker#running-commands-in-dockerfile-within-the-conda-environment
